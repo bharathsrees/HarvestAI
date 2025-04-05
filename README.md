@@ -1,73 +1,82 @@
-# Welcome to your Lovable project
+# HarvestAI
+HarvestAI is an AI-powered farming assistant that helps smallholder farmers detect crop diseases, get weather forecasts, and access markets—all through a simple web/mobile app. 
 
-## Project info
+# 🌱 HarvestAI - AI-Powered Smart Farming Platform
 
-**URL**: https://lovable.dev/projects/c74dd7a7-b857-41b1-b325-6f02a6b410e1
+<div align="center">
+  <img src="public/logo.svg" alt="HarvestAI Logo" width="150"/>
+  <p>Empowering smallholder farmers with accessible AI-driven agriculture solutions</p>
 
-## How can I edit this code?
+  ![React](https://img.shields.io/badge/React-18.2-blue)
+  ![TensorFlow](https://img.shields.io/badge/TensorFlow.js-3.20-orange)
+  ![i18n](https://img.shields.io/badge/Multilingual-EN%2FHI-yellowgreen)
+  ![License](https://img.shields.io/badge/License-MIT-green)
+</div>
 
-There are several ways of editing your application.
+## ✨ Implemented Features
+### 🤖 AI Core
+- **Crop Disease Scanner**  
+  TensorFlow.js model detecting 8+ common diseases from images
+- **Hyperlocal Weather**  
+  IMD API integration with irrigation advisories
 
-**Use Lovable**
+### 🌐 Accessibility
+- **Multilingual Support**  
+  Hindi/English interface with i18next
+- **Offline-First PWA**  
+  Critical features work without internet
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/c74dd7a7-b857-41b1-b325-6f02a6b410e1) and start prompting.
+### 👥 Farmer Support
+- **Expert Connect**  
+  Video consultation scheduling with agronomists
+- **Community Forum**  
+  Discussion platform for knowledge sharing
 
-Changes made via Lovable will be committed automatically to this repo.
+### 📊 Market Linkage
+- **Price Trends**  
+  E-NAM inspired market dashboard
+- **Selling Portal**  
+  Direct buyer connections (demo mode)
 
-**Use your preferred IDE**
+## 🛠 Tech Stack
+| Layer          | Technology               | Purpose                     |
+|----------------|--------------------------|-----------------------------|
+| **Frontend**   | React + TypeScript       | Responsive web interface    |
+| **AI/ML**      | TensorFlow.js            | On-device disease detection |
+| **Localization**| i18next                 | Multilingual support        |
+| **Styling**    | Tailwind CSS + ShadCN    | Consistent UI components    |
+| **Backend**    | Supabase                 | Realtime data & auth        |
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+# 🚀 Future Roadmap
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+**2025**
++ Q3: SMS/USSD Gateway (Twilio)
++ Q4: Mobile App (React Native)
 
-Follow these steps:
+**2026**
++ Q1: IoT Soil Sensors (LoRaWAN)
++ Q2: UPI Payment Integration
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+# 💻 Development
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
+**Install dependencies**
 npm i
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+**Start dev server**
 npm run dev
-```
 
-**Edit a file directly in GitHub**
+**Build for production**
+npm run build
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+# 🌐 Deployment
 
-**Use GitHub Codespaces**
+**Netlify Setup:**
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+[build]
+command = "npm run build"
+publish = "dist"
 
-## What technologies are used for this project?
+# 📜 License
+**MIT © 2024 InnovateX | GDG Solution Challenge Submission**
 
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/c74dd7a7-b857-41b1-b325-6f02a6b410e1) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes it is!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+<div align="center"> <sub>Built with ❤️ by Team InnovateX | Bharathsree S (Team Lead)</sub> </div> ```

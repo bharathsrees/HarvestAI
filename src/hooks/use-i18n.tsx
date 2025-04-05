@@ -1,4 +1,3 @@
-
 import { createContext, useContext, useEffect, useState } from "react";
 import { LanguageCode, TranslationKey, translations } from "@/i18n/translations";
 
@@ -33,6 +32,9 @@ export const I18nProvider = ({ children }: { children: React.ReactNode }) => {
     setLanguageState(lang);
     localStorage.setItem(LANGUAGE_STORAGE_KEY, lang);
     document.documentElement.lang = lang;
+    
+    // Force a re-render of the app when language changes
+    window.dispatchEvent(new Event('languagechange'));
   };
 
   useEffect(() => {
@@ -40,7 +42,9 @@ export const I18nProvider = ({ children }: { children: React.ReactNode }) => {
   }, [language]);
 
   const t = (key: TranslationKey, fallback?: string): string => {
-    return translations[language][key] || fallback || key;
+    const translation = translations[language][key];
+    // If the translation exists, return it, otherwise return the fallback or the key
+    return translation || fallback || key;
   };
 
   return (

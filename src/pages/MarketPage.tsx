@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { 
   ShoppingCart, 
@@ -18,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { useI18n } from "@/hooks/use-i18n";
 
 interface CropPrice {
   id: number;
@@ -42,65 +42,66 @@ interface FarmerProduct {
 
 const MarketPage = () => {
   const { toast } = useToast();
+  const { t } = useI18n();
   const [selectedCrop, setSelectedCrop] = useState<CropPrice | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [showNewProductForm, setShowNewProductForm] = useState(false);
   
   const marketPrices: CropPrice[] = [
-    { id: 1, name: "Wheat", price: 280.50, unit: "per ton", change: 1.2, trend: "up" },
-    { id: 2, name: "Corn", price: 220.75, unit: "per ton", change: -0.8, trend: "down" },
-    { id: 3, name: "Soybeans", price: 550.25, unit: "per ton", change: 2.3, trend: "up" },
-    { id: 4, name: "Rice", price: 420.00, unit: "per ton", change: 0.5, trend: "up" },
-    { id: 5, name: "Potatoes", price: 12.35, unit: "per kg", change: -1.5, trend: "down" },
-    { id: 6, name: "Tomatoes", price: 3.75, unit: "per kg", change: -2.1, trend: "down" },
-    { id: 7, name: "Apples", price: 2.50, unit: "per kg", change: 0.2, trend: "stable" },
-    { id: 8, name: "Oranges", price: 2.80, unit: "per kg", change: 1.0, trend: "up" }
+    { id: 1, name: t("crops.wheat", "Wheat"), price: 280.50, unit: t("units.perTon", "per ton"), change: 1.2, trend: "up" },
+    { id: 2, name: t("crops.corn", "Corn"), price: 220.75, unit: t("units.perTon", "per ton"), change: -0.8, trend: "down" },
+    { id: 3, name: t("crops.soybeans", "Soybeans"), price: 550.25, unit: t("units.perTon", "per ton"), change: 2.3, trend: "up" },
+    { id: 4, name: t("crops.rice", "Rice"), price: 420.00, unit: t("units.perTon", "per ton"), change: 0.5, trend: "up" },
+    { id: 5, name: t("crops.potatoes", "Potatoes"), price: 12.35, unit: t("units.perKg", "per kg"), change: -1.5, trend: "down" },
+    { id: 6, name: t("crops.tomatoes", "Tomatoes"), price: 3.75, unit: t("units.perKg", "per kg"), change: -2.1, trend: "down" },
+    { id: 7, name: t("crops.apples", "Apples"), price: 2.50, unit: t("units.perKg", "per kg"), change: 0.2, trend: "stable" },
+    { id: 8, name: t("crops.oranges", "Oranges"), price: 2.80, unit: t("units.perKg", "per kg"), change: 1.0, trend: "up" }
   ];
   
   const farmerProducts: FarmerProduct[] = [
     {
       id: 1,
-      farmer: "Green Valley Farm",
-      crop: "Organic Tomatoes",
+      farmer: t("farmers.greenValley", "Green Valley Farm"),
+      crop: t("products.organicTomatoes", "Organic Tomatoes"),
       quantity: 500,
       unit: "kg",
       price: 4.25,
-      location: "Agritech Valley",
+      location: t("locations.agritechValley", "Agritech Valley"),
       organic: true,
-      image: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9"
+      image: "https://images.unsplash.com/photo-1557800636-894a64c1696f" // Updated tomato image
     },
     {
       id: 2,
-      farmer: "Sunrise Orchards",
-      crop: "Fresh Apples",
+      farmer: t("farmers.sunriseOrchards", "Sunrise Orchards"),
+      crop: t("products.freshApples", "Fresh Apples"),
       quantity: 750,
       unit: "kg",
       price: 2.75,
-      location: "Highland County",
+      location: t("locations.highlandCounty", "Highland County"),
       organic: false,
-      image: "https://images.unsplash.com/photo-1472396961693-142e6e269027"
+      image: "https://images.unsplash.com/photo-1570913149827-d2ac84ab3f9a" // Updated apple image
     },
     {
       id: 3,
-      farmer: "River Creek Farms",
-      crop: "Organic Potatoes",
+      farmer: t("farmers.riverCreek", "River Creek Farms"),
+      crop: t("products.organicPotatoes", "Organic Potatoes"),
       quantity: 1200,
       unit: "kg",
       price: 1.80,
-      location: "Westfield",
+      location: t("locations.westfield", "Westfield"),
       organic: true,
-      image: "https://images.unsplash.com/photo-1493962853295-0fd70327578a"
+      image: "https://images.unsplash.com/photo-1518977676601-b53f82aba655" // Updated potato image
     },
     {
       id: 4,
-      farmer: "Sunny Meadows",
-      crop: "Premium Wheat",
+      farmer: t("farmers.sunnyMeadows", "Sunny Meadows"),
+      crop: t("products.premiumWheat", "Premium Wheat"),
       quantity: 3000,
       unit: "kg",
       price: 0.95,
-      location: "Eastlake County",
+      location: t("locations.eastlakeCounty", "Eastlake County"),
       organic: false,
-      image: "https://images.unsplash.com/photo-1465379944081-7f47de8d74ac"
+      image: "https://images.unsplash.com/photo-1535912559178-39783fccc107" // Updated wheat field image
     }
   ];
   
@@ -121,15 +122,15 @@ const MarketPage = () => {
   
   const handleContact = (product: FarmerProduct) => {
     toast({
-      title: "Contact Request Sent",
-      description: `You've requested to buy ${product.crop} from ${product.farmer}`
+      title: t("market.contactRequestSent", "Contact Request Sent"),
+      description: t("market.contactRequestDescription", `You've requested to buy ${product.crop} from ${product.farmer}`)
     });
   };
   
   const handleAddProduct = () => {
     toast({
-      title: "Product Listed",
-      description: "Your product has been listed on the marketplace"
+      title: t("market.productListed", "Product Listed"),
+      description: t("market.productListedDescription", "Your product has been listed on the marketplace")
     });
     setShowNewProductForm(false);
   };
@@ -147,9 +148,9 @@ const MarketPage = () => {
       <main className="flex-grow py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-900">Market Prices & Direct Sales</h1>
+            <h1 className="text-3xl font-bold text-gray-900">{t("market.title", "Market Prices & Direct Sales")}</h1>
             <p className="mt-2 text-lg text-gray-600">
-              Track real-time crop prices and connect directly with buyers or sellers
+              {t("market.description", "Track real-time crop prices and connect directly with buyers or sellers")}
             </p>
           </div>
           
@@ -157,8 +158,8 @@ const MarketPage = () => {
             <div className="lg:col-span-2">
               <Tabs defaultValue="prices" className="h-full">
                 <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="prices">Market Prices</TabsTrigger>
-                  <TabsTrigger value="marketplace">Farmer Marketplace</TabsTrigger>
+                  <TabsTrigger value="prices">{t("market.tabs.prices", "Market Prices")}</TabsTrigger>
+                  <TabsTrigger value="marketplace">{t("market.tabs.marketplace", "Farmer Marketplace")}</TabsTrigger>
                 </TabsList>
                 
                 <TabsContent value="prices">
@@ -166,7 +167,7 @@ const MarketPage = () => {
                     <CardHeader>
                       <CardTitle className="flex items-center space-x-2">
                         <LineChart className="h-5 w-5 text-harvest-primary" />
-                        <span>Current Crop Prices</span>
+                        <span>{t("market.currentCropPrices", "Current Crop Prices")}</span>
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
@@ -174,11 +175,11 @@ const MarketPage = () => {
                         <table className="w-full text-sm">
                           <thead>
                             <tr className="bg-gray-50">
-                              <th className="px-4 py-2 text-left">Crop</th>
-                              <th className="px-4 py-2 text-right">Price</th>
-                              <th className="px-4 py-2 text-right">Change</th>
-                              <th className="px-4 py-2 text-center">Trend</th>
-                              <th className="px-4 py-2 text-center">Action</th>
+                              <th className="px-4 py-2 text-left">{t("market.table.crop", "Crop")}</th>
+                              <th className="px-4 py-2 text-right">{t("market.table.price", "Price")}</th>
+                              <th className="px-4 py-2 text-right">{t("market.table.change", "Change")}</th>
+                              <th className="px-4 py-2 text-center">{t("market.table.trend", "Trend")}</th>
+                              <th className="px-4 py-2 text-center">{t("market.table.action", "Action")}</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -212,7 +213,7 @@ const MarketPage = () => {
                                       handleCropSelect(crop);
                                     }}
                                   >
-                                    Details
+                                    {t("market.details", "Details")}
                                   </button>
                                 </td>
                               </tr>
@@ -222,10 +223,10 @@ const MarketPage = () => {
                       </div>
                       
                       <div className="mt-6 flex items-center justify-between text-sm text-gray-500">
-                        <p>Last updated: Today, 10:30 AM</p>
+                        <p>{t("market.lastUpdated", "Last updated")}: {t("market.today", "Today")}, 10:30 AM</p>
                         <p className="flex items-center">
                           <AlertTriangle size={14} className="mr-1 text-yellow-500" />
-                          Prices may vary by region and quality
+                          {t("market.pricesDisclaimer", "Prices may vary by region and quality")}
                         </p>
                       </div>
                     </CardContent>
@@ -237,33 +238,33 @@ const MarketPage = () => {
                     <CardHeader className="flex flex-row items-center justify-between">
                       <CardTitle className="flex items-center space-x-2">
                         <ShoppingCart className="h-5 w-5 text-harvest-primary" />
-                        <span>Farmer's Marketplace</span>
+                        <span>{t("market.farmersMarketplace", "Farmer's Marketplace")}</span>
                       </CardTitle>
                       <Button 
                         className="bg-harvest-primary hover:bg-harvest-secondary"
                         onClick={() => setShowNewProductForm(!showNewProductForm)}
                       >
                         <Plus size={16} className="mr-1" />
-                        List Product
+                        {t("market.listProduct", "List Product")}
                       </Button>
                     </CardHeader>
                     <CardContent>
                       {showNewProductForm && (
                         <div className="mb-6 bg-gray-50 p-4 rounded-lg border border-gray-200">
-                          <h3 className="text-lg font-medium mb-4">List Your Product</h3>
+                          <h3 className="text-lg font-medium mb-4">{t("market.listYourProduct", "List Your Product")}</h3>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             <div>
                               <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Crop/Product Name
+                                {t("market.form.productName", "Crop/Product Name")}
                               </label>
-                              <Input placeholder="e.g., Organic Tomatoes" />
+                              <Input placeholder={t("market.form.productNamePlaceholder", "e.g., Organic Tomatoes")} />
                             </div>
                             <div>
                               <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Quantity & Unit
+                                {t("market.form.quantityAndUnit", "Quantity & Unit")}
                               </label>
                               <div className="flex space-x-2">
-                                <Input type="number" placeholder="Amount" className="w-2/3" />
+                                <Input type="number" placeholder={t("market.form.amount", "Amount")} className="w-2/3" />
                                 <select className="w-1/3 rounded-md border border-gray-300 shadow-sm px-3 py-2 bg-white text-sm">
                                   <option>kg</option>
                                   <option>ton</option>
@@ -273,24 +274,24 @@ const MarketPage = () => {
                             </div>
                             <div>
                               <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Price per Unit ($)
+                                {t("market.form.pricePerUnit", "Price per Unit ($)")}
                               </label>
-                              <Input type="number" placeholder="Price" />
+                              <Input type="number" placeholder={t("market.form.price", "Price")} />
                             </div>
                             <div>
                               <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Location
+                                {t("market.form.location", "Location")}
                               </label>
-                              <Input placeholder="Your farm location" />
+                              <Input placeholder={t("market.form.locationPlaceholder", "Your farm location")} />
                             </div>
                             <div className="md:col-span-2">
                               <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Product Description
+                                {t("market.form.productDescription", "Product Description")}
                               </label>
                               <textarea 
                                 className="w-full rounded-md border border-gray-300 shadow-sm px-3 py-2 bg-white text-sm"
                                 rows={3}
-                                placeholder="Describe your product (quality, harvesting date, etc.)"
+                                placeholder={t("market.form.descriptionPlaceholder", "Describe your product (quality, harvesting date, etc.)")}
                               ></textarea>
                             </div>
                           </div>
@@ -299,13 +300,13 @@ const MarketPage = () => {
                               variant="outline" 
                               onClick={() => setShowNewProductForm(false)}
                             >
-                              Cancel
+                              {t("common.cancel", "Cancel")}
                             </Button>
                             <Button 
                               className="bg-harvest-primary hover:bg-harvest-secondary"
                               onClick={handleAddProduct}
                             >
-                              List Product
+                              {t("market.listProduct", "List Product")}
                             </Button>
                           </div>
                         </div>
@@ -315,7 +316,7 @@ const MarketPage = () => {
                         <div className="relative">
                           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
                           <Input 
-                            placeholder="Search by crop, farmer, or location" 
+                            placeholder={t("market.searchPlaceholder", "Search by crop, farmer, or location")} 
                             className="pl-10"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
@@ -342,7 +343,7 @@ const MarketPage = () => {
                                   <h3 className="font-medium text-gray-900">{product.crop}</h3>
                                   {product.organic && (
                                     <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
-                                      Organic
+                                      {t("market.organic", "Organic")}
                                     </span>
                                   )}
                                 </div>
@@ -353,24 +354,24 @@ const MarketPage = () => {
                                     <span className="text-gray-500">{product.unit}</span>
                                   </p>
                                   <p className="text-sm text-gray-500">
-                                    {product.quantity} {product.unit} available
+                                    {product.quantity} {product.unit} {t("market.available", "available")}
                                   </p>
                                 </div>
                                 <p className="text-xs text-gray-500 mt-1">
-                                  Location: {product.location}
+                                  {t("market.location", "Location")}: {product.location}
                                 </p>
                                 <Button 
                                   className="w-full mt-3 bg-harvest-primary hover:bg-harvest-secondary"
                                   onClick={() => handleContact(product)}
                                 >
-                                  Contact Seller
+                                  {t("market.contactSeller", "Contact Seller")}
                                 </Button>
                               </div>
                             </div>
                           ))
                         ) : (
                           <div className="col-span-2 text-center py-8">
-                            <p className="text-gray-500">No products found matching your search.</p>
+                            <p className="text-gray-500">{t("market.noProductsFound", "No products found matching your search.")}</p>
                           </div>
                         )}
                       </div>
@@ -385,7 +386,7 @@ const MarketPage = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center space-x-2">
                     <Layers className="h-5 w-5 text-harvest-primary" />
-                    <span>Market Insights</span>
+                    <span>{t("market.insights", "Market Insights")}</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -408,7 +409,7 @@ const MarketPage = () => {
                       </div>
                       
                       <div className="bg-gray-50 rounded-lg p-4 mb-4">
-                        <p className="text-sm text-gray-600 mb-2">Current Price:</p>
+                        <p className="text-sm text-gray-600 mb-2">{t("market.currentPrice", "Current Price")}:</p>
                         <p className="text-2xl font-bold text-gray-900">
                           ${selectedCrop.price.toFixed(2)} <span className="text-sm font-normal text-gray-500">{selectedCrop.unit}</span>
                         </p>
@@ -416,7 +417,7 @@ const MarketPage = () => {
                       
                       <div className="space-y-4">
                         <div>
-                          <h4 className="text-sm font-medium text-gray-900 mb-2">Price History</h4>
+                          <h4 className="text-sm font-medium text-gray-900 mb-2">{t("market.priceHistory", "Price History")}</h4>
                           <div className="h-20 bg-gray-100 rounded-md flex items-end px-2">
                             {/* Placeholder for chart - in real app would use Recharts */}
                             {[...Array(12)].map((_, i) => {
@@ -437,31 +438,31 @@ const MarketPage = () => {
                             })}
                           </div>
                           <div className="flex justify-between mt-1 text-xs text-gray-500">
-                            <span>Jan</span>
-                            <span>Dec</span>
+                            <span>{t("months.jan", "Jan")}</span>
+                            <span>{t("months.dec", "Dec")}</span>
                           </div>
                         </div>
                         
                         <div>
-                          <h4 className="text-sm font-medium text-gray-900 mb-2">Market Analysis</h4>
+                          <h4 className="text-sm font-medium text-gray-900 mb-2">{t("market.analysis", "Market Analysis")}</h4>
                           <p className="text-sm text-gray-600">
                             {selectedCrop.trend === "up" 
-                              ? `${selectedCrop.name} prices are trending upward due to increased demand and lower supplies. Consider holding if you can store safely.`
+                              ? t("market.analysis.up", `${selectedCrop.name} prices are trending upward due to increased demand and lower supplies. Consider holding if you can store safely.`)
                               : selectedCrop.trend === "down"
-                                ? `${selectedCrop.name} prices are declining due to seasonal harvests increasing supply. Consider selling soon if quality might degrade.`
-                                : `${selectedCrop.name} prices are stable with consistent demand. Good time for regular selling.`
+                                ? t("market.analysis.down", `${selectedCrop.name} prices are declining due to seasonal harvests increasing supply. Consider selling soon if quality might degrade.`)
+                                : t("market.analysis.stable", `${selectedCrop.name} prices are stable with consistent demand. Good time for regular selling.`)
                             }
                           </p>
                         </div>
                         
                         <div className="bg-harvest-light rounded-lg p-4">
-                          <h4 className="text-sm font-medium text-gray-900 mb-2">Trading Tip</h4>
+                          <h4 className="text-sm font-medium text-gray-900 mb-2">{t("market.tradingTip", "Trading Tip")}</h4>
                           <p className="text-sm text-gray-600">
                             {selectedCrop.trend === "up" 
-                              ? "Consider forward contracts to lock in current high prices for future production."
+                              ? t("market.tradingTip.up", "Consider forward contracts to lock in current high prices for future production.")
                               : selectedCrop.trend === "down"
-                                ? "Look into value-added processing options to increase profit margins during low price periods."
-                                : "Diversify your selling strategy with a mix of spot market sales and forward contracts."
+                                ? t("market.tradingTip.down", "Look into value-added processing options to increase profit margins during low price periods.")
+                                : t("market.tradingTip.stable", "Diversify your selling strategy with a mix of spot market sales and forward contracts.")
                             }
                           </p>
                         </div>
@@ -470,9 +471,9 @@ const MarketPage = () => {
                   ) : (
                     <div className="text-center py-12">
                       <LineChart className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-                      <h3 className="text-lg font-medium text-gray-900 mb-1">Select a Crop</h3>
+                      <h3 className="text-lg font-medium text-gray-900 mb-1">{t("market.selectCrop", "Select a Crop")}</h3>
                       <p className="text-sm text-gray-500">
-                        Click on a crop in the market prices table to view detailed insights
+                        {t("market.selectCropInstruction", "Click on a crop in the market prices table to view detailed insights")}
                       </p>
                     </div>
                   )}

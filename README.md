@@ -4,7 +4,6 @@ HarvestAI is an AI-powered farming assistant that helps smallholder farmers dete
 # 🌱 HarvestAI - AI-Powered Smart Farming Platform
 
 <div align="center">
-  <img src="public/logo.svg" alt="HarvestAI Logo" width="150"/>
   <p>Empowering smallholder farmers with accessible AI-driven agriculture solutions</p>
 
   ![React](https://img.shields.io/badge/React-18.2-blue)

@@ -1,4 +1,3 @@
-
 import { Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,7 +16,7 @@ export function LanguageSelector() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon">
           <Globe className="h-[1.2rem] w-[1.2rem]" />
-          <span className="sr-only">Change language</span>
+          <span className="sr-only">{t("nav.changeLanguage", "Change language")}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">

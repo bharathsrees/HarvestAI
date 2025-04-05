@@ -1,0 +1,102 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 100 38% 98%;
+    --foreground: 120 15% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 120 15% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 120 15% 15%;
+
+    --primary: 122 40% 49%;
+    --primary-foreground: 120 100% 98%;
+
+    --secondary: 124 53% 24%;
+    --secondary-foreground: 120 100% 98%;
+
+    --muted: 120 16% 93%;
+    --muted-foreground: 120 10% 40%;
+
+    --accent: 199 100% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 120 15% 85%;
+    --input: 120 15% 85%;
+    --ring: 122 40% 49%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 120 15% 8%;
+    --foreground: 120 10% 98%;
+
+    --card: 120 15% 12%;
+    --card-foreground: 120 10% 98%;
+
+    --popover: 120 15% 12%;
+    --popover-foreground: 120 10% 98%;
+
+    --primary: 122 40% 49%;
+    --primary-foreground: 120 10% 98%;
+
+    --secondary: 124 53% 24%;
+    --secondary-foreground: 120 10% 98%;
+
+    --muted: 120 15% 20%;
+    --muted-foreground: 120 10% 70%;
+
+    --accent: 199 100% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 120 15% 25%;
+    --input: 120 15% 25%;
+    --ring: 122 40% 49%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer components {
+  .harvest-gradient {
+    @apply bg-gradient-to-br from-harvest-primary to-harvest-secondary;
+  }
+  
+  .hover-scale {
+    @apply transition-transform duration-300 hover:scale-105;
+  }
+  
+  .card-shadow {
+    @apply shadow-md hover:shadow-lg transition-shadow duration-300;
+  }
+}

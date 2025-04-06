@@ -1,4 +1,4 @@
-# HarvestAI
+![image](https://github.com/user-attachments/assets/bc294b4c-dbad-4458-985c-1db5431b5c23)# HarvestAI
 HarvestAI is an AI-powered farming assistant that helps smallholder farmers detect crop diseases, get weather forecasts, and access markets—all through a simple web/mobile app. 
 
 # 🌱 HarvestAI - AI-Powered Smart Farming Platform
@@ -11,6 +11,7 @@ HarvestAI is an AI-powered farming assistant that helps smallholder farmers dete
   ![i18n](https://img.shields.io/badge/Multilingual-EN%2FHI-yellowgreen)
   ![License](https://img.shields.io/badge/License-MIT-green)
 </div>
+
 
 ## ✨ Implemented Features
 ### 🤖 AI Core
@@ -36,6 +37,11 @@ HarvestAI is an AI-powered farming assistant that helps smallholder farmers dete
   E-NAM inspired market dashboard
 - **Selling Portal**  
   Direct buyer connections (demo mode)
+
+# Architecture Diagram
+
+![image](https://github.com/user-attachments/assets/6b062a52-419c-46a9-81f2-c7601ac8b8d0)
+
 
 ## 🛠 Tech Stack
 | Layer          | Technology               | Purpose                     |
@@ -74,6 +80,19 @@ npm run build
 [build]
 command = "npm run build"
 publish = "dist"
+
+# Prototype Screenshots (web)
+
+![image](https://github.com/user-attachments/assets/5321fc9f-3082-40c3-a6d7-f2bb57a1d872)
+
+**link**: https://harvest-ai.netlify.app/
+
+# Prototype Screenshots (app)
+
+![image](https://github.com/user-attachments/assets/98bdb872-cf48-45eb-a559-a9f9641b92c3)
+
+**link**: https://harvest-ai-mobile.rork.app/
+
 
 # 📜 License
 **MIT © 2024 InnovateX | GDG Solution Challenge Submission**

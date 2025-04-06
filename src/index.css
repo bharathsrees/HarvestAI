@@ -156,7 +156,7 @@
 
 /* Fix for dark icons with dark background */
 .dark .text-harvest-primary {
-  @apply text-harvest-primary brightness-125;
+  @apply text-green-400 brightness-125;
 }
 
 .dark .bg-harvest-light {
@@ -172,3 +172,4 @@
 .dark .card {
   @apply bg-gray-800 border-gray-700;
 }
+

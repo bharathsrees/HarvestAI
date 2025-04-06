@@ -311,13 +311,19 @@ const handleContact = (product: FarmerProduct) => {
                                 <td className="px-4 py-3 text-right">
                                   ${crop.price.toFixed(2)} <span className="text-gray-500 dark:text-gray-400 text-xs">{crop.unit}</span>
                                 </td>
-                                <td className={px-4 py-3 text-right ${
-                                  crop.change > 0 
-                                    ? "text-green-600" 
-                                    : crop.change < 0 
-                                      ? "text-red-600" 
-                                      : "text-gray-600 dark:text-gray-400"
-                                }}>
+<td
+  className={`px-4 py-3 text-right ${
+    crop.change > 0
+      ? "text-green-600"
+      : crop.change < 0
+        ? "text-red-600"
+        : "text-gray-600 dark:text-gray-400"
+  }`}
+>
+  {crop.change > 0 ? "+" : ""}
+  {crop.change.toFixed(1)}%
+</td>
+
                                   {crop.change > 0 ? "+" : ""}{crop.change.toFixed(1)}%
                                 </td>
                                 <td className="px-4 py-3 text-center">

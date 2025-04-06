@@ -647,3 +647,4 @@ const MarketPage = () => {
 };
 
 export default MarketPage;
+

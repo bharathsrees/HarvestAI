@@ -154,16 +154,12 @@ const MarketPage = () => {
     setSelectedCrop(crop);
   };
   
-const handleContact = (product: FarmerProduct) => {
-  toast({
-    title: t("market.contactRequestSent", "Contact Request Sent"),
-    description: t(
-      "market.contactRequestDescription",
-      `You've requested to buy ${product.crop} from ${product.farmer}`
-    ),
-  });
-};
-
+  const handleContact = (product: FarmerProduct) => {
+    toast({
+      title: t("market.contactRequestSent", "Contact Request Sent"),
+      description: t("market.contactRequestDescription", `You've requested to buy ${product.crop} from ${product.farmer}`)
+    });
+  };
 
   // Handle form input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -311,19 +307,13 @@ const handleContact = (product: FarmerProduct) => {
                                 <td className="px-4 py-3 text-right">
                                   ${crop.price.toFixed(2)} <span className="text-gray-500 dark:text-gray-400 text-xs">{crop.unit}</span>
                                 </td>
-<td
-  className={`px-4 py-3 text-right ${
-    crop.change > 0
-      ? "text-green-600"
-      : crop.change < 0
-        ? "text-red-600"
-        : "text-gray-600 dark:text-gray-400"
-  }`}
->
-  {crop.change > 0 ? "+" : ""}
-  {crop.change.toFixed(1)}%
-</td>
-
+                                <td className={`px-4 py-3 text-right ${
+                                  crop.change > 0 
+                                    ? "text-green-600" 
+                                    : crop.change < 0 
+                                      ? "text-red-600" 
+                                      : "text-gray-600 dark:text-gray-400"
+                                }`}>
                                   {crop.change > 0 ? "+" : ""}{crop.change.toFixed(1)}%
                                 </td>
                                 <td className="px-4 py-3 text-center">
@@ -563,13 +553,13 @@ const handleContact = (product: FarmerProduct) => {
                         <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{selectedCrop.name}</h3>
                         <div className="flex items-center">
                           {getTrendIcon(selectedCrop.trend, 20)}
-                          <span className={ml-1 font-medium ${
+                          <span className={`ml-1 font-medium ${
                             selectedCrop.change > 0 
                               ? "text-green-600" 
                               : selectedCrop.change < 0 
                                 ? "text-red-600" 
                                 : "text-gray-600 dark:text-gray-400"
-                          }}>
+                          }`}>
                             {selectedCrop.change > 0 ? "+" : ""}{selectedCrop.change.toFixed(1)}%
                           </span>
                         </div>
@@ -593,12 +583,12 @@ const handleContact = (product: FarmerProduct) => {
                                 <div 
                                   key={i} 
                                   className="w-1/12 mx-0.5"
-                                  style={{ height: ${height}% }}
+                                  style={{ height: `${height}%` }}
                                 >
                                   <div 
-                                    className={w-full h-full rounded-t ${
+                                    className={`w-full h-full rounded-t ${
                                       i === 11 ? 'bg-harvest-primary' : 'bg-gray-300 dark:bg-gray-600'
-                                    }}
+                                    }`}
                                   ></div>
                                 </div>
                               );
@@ -614,10 +604,10 @@ const handleContact = (product: FarmerProduct) => {
                           <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">{t("market.analysis", "Market Analysis")}</h4>
                           <p className="text-sm text-gray-600 dark:text-gray-400">
                             {selectedCrop.trend === "up" 
-                              ? t("market.analysis.up", ${selectedCrop.name} prices are trending upward due to increased demand and lower supplies. Consider holding if you can store safely.)
+                              ? t("market.analysis.up", `${selectedCrop.name} prices are trending upward due to increased demand and lower supplies. Consider holding if you can store safely.`)
                               : selectedCrop.trend === "down"
-                                ? t("market.analysis.down", ${selectedCrop.name} prices are declining due to seasonal harvests increasing supply. Consider selling soon if quality might degrade.)
-                                : t("market.analysis.stable", ${selectedCrop.name} prices are stable with consistent demand. Good time for regular selling.)
+                                ? t("market.analysis.down", `${selectedCrop.name} prices are declining due to seasonal harvests increasing supply. Consider selling soon if quality might degrade.`)
+                                : t("market.analysis.stable", `${selectedCrop.name} prices are stable with consistent demand. Good time for regular selling.`)
                             }
                           </p>
                         </div>
@@ -657,3 +647,4 @@ const handleContact = (product: FarmerProduct) => {
 };
 
 export default MarketPage;
+

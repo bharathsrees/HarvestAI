@@ -1,3 +1,4 @@
+// pages/market/index.tsx
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Navbar from "@/components/layout/Navbar";
@@ -7,10 +8,61 @@ import FarmerMarketplace from "@/components/market/FarmerMarketplace";
 import MarketInsights from "@/components/market/MarketInsights";
 import { useI18n } from "@/hooks/use-i18n";
 
+// Initial product data - moved outside component
+const initialFarmerProducts = [
+  {
+    id: 1,
+    farmer: "Green Valley Farm",
+    crop: "Organic Tomatoes",
+    quantity: 500,
+    unit: "kg",
+    price: 4.25,
+    location: "Agritech Valley",
+    organic: true,
+    image: "https://images.unsplash.com/photo-1557800636-894a64c1696f"
+  },
+     {
+      id: 2,
+      farmer: t("farmers.sunriseOrchards", "Sunrise Orchards"),
+      crop: t("products.freshApples", "Fresh Apples"),
+      quantity: 750,
+      unit: "kg",
+      price: 2.75,
+      location: t("locations.highlandCounty", "Highland County"),
+      organic: false,
+      image: "https://images.unsplash.com/photo-1570913149827-d2ac84ab3f9a"
+    },
+    {
+      id: 3,
+      farmer: t("farmers.riverCreek", "River Creek Farms"),
+      crop: t("products.organicPotatoes", "Organic Potatoes"),
+      quantity: 1200,
+      unit: "kg",
+      price: 1.80,
+      location: t("locations.westfield", "Westfield"),
+      organic: true,
+      image: "https://images.unsplash.com/photo-1518977676601-b53f82aba655"
+    },
+    {
+      id: 4,
+      farmer: t("farmers.sunnyMeadows", "Sunny Meadows"),
+      crop: t("products.premiumWheat", "Premium Wheat"),
+      quantity: 3000,
+      unit: "kg",
+      price: 0.95,
+      location: t("locations.eastlakeCounty", "Eastlake County"),
+      organic: false,
+      image: "https://images.unsplash.com/photo-1535912559178-39783fccc107"
+    }
+];
+
+const STORAGE_KEY = "harvestai-market-products";
+
 const MarketPage = () => {
   const { t } = useI18n();
   const [selectedCropId, setSelectedCropId] = useState<string | null>(null);
-  
+  const [farmerProducts, setFarmerProducts] = useState(initialFarmerProducts);
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -47,7 +99,12 @@ const MarketPage = () => {
                 </TabsContent>
                 
                 <TabsContent value="marketplace">
-                  <FarmerMarketplace />
+                  <FarmerMarketplace 
+                    initialFarmerProducts={initialFarmerProducts}
+                    farmerProducts={farmerProducts}
+                    setFarmerProducts={setFarmerProducts}
+                    storageKey={STORAGE_KEY}
+                  />
                 </TabsContent>
               </Tabs>
             </div>

@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -47,10 +46,10 @@
 
   .dark {
     --background: 120 15% 8%;
-    --foreground: 120 10% 98%;
+    --foreground: 120 10% 98%; /* Lightened text color for dark mode */
 
     --card: 120 15% 12%;
-    --card-foreground: 120 10% 98%;
+    --card-foreground: 120 10% 98%; /* Lightened card text for dark mode */
 
     --popover: 120 15% 12%;
     --popover-foreground: 120 10% 98%;
@@ -62,7 +61,7 @@
     --secondary-foreground: 120 10% 98%;
 
     --muted: 120 15% 20%;
-    --muted-foreground: 120 10% 70%;
+    --muted-foreground: 120 10% 70%; /* Lightened muted text for dark mode */
 
     --accent: 199 100% 50%;
     --accent-foreground: 0 0% 100%;
@@ -99,4 +98,45 @@
   .card-shadow {
     @apply shadow-md hover:shadow-lg transition-shadow duration-300;
   }
+}
+
+/* Specific dark mode improvements */
+.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+  @apply text-gray-100;
+}
+
+.dark p, .dark span, .dark div {
+  @apply text-gray-200;
+}
+
+.dark .text-gray-900 {
+  @apply text-gray-100;
+}
+
+.dark .text-gray-800 {
+  @apply text-gray-200;
+}
+
+.dark .text-gray-700 {
+  @apply text-gray-300;
+}
+
+.dark .text-gray-600 {
+  @apply text-gray-400;
+}
+
+.dark .text-gray-500 {
+  @apply text-gray-400;
+}
+
+.dark .border-gray-200 {
+  @apply border-gray-700;
+}
+
+.dark .bg-gray-50 {
+  @apply bg-gray-800;
+}
+
+.dark .hover\:bg-gray-50:hover {
+  @apply hover:bg-gray-700;
 }

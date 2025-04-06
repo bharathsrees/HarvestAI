@@ -154,12 +154,16 @@ const MarketPage = () => {
     setSelectedCrop(crop);
   };
   
-  const handleContact = (product: FarmerProduct) => {
-    toast({
-      title: t("market.contactRequestSent", "Contact Request Sent"),
-      description: t("market.contactRequestDescription", You've requested to buy ${product.crop} from ${product.farmer})
-    });
-  };
+const handleContact = (product: FarmerProduct) => {
+  toast({
+    title: t("market.contactRequestSent", "Contact Request Sent"),
+    description: t(
+      "market.contactRequestDescription",
+      `You've requested to buy ${product.crop} from ${product.farmer}`
+    ),
+  });
+};
+
 
   // Handle form input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {

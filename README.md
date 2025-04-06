@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/bc294b4c-dbad-4458-985c-1db5431b5c23)# HarvestAI
+# HarvestAI
 HarvestAI is an AI-powered farming assistant that helps smallholder farmers detect crop diseases, get weather forecasts, and access markets—all through a simple web/mobile app. 
 
 # 🌱 HarvestAI - AI-Powered Smart Farming Platform

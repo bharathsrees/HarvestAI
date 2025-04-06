@@ -140,3 +140,35 @@
 .dark .hover\:bg-gray-50:hover {
   @apply hover:bg-gray-700;
 }
+
+/* Additional dark mode improvements for feature cards */
+.dark .bg-white {
+  @apply bg-gray-800;
+}
+
+.dark .bg-background {
+  @apply bg-gray-900;
+}
+
+.dark .text-harvest-dark {
+  @apply text-harvest-light;
+}
+
+/* Fix for dark icons with dark background */
+.dark .text-harvest-primary {
+  @apply text-harvest-primary brightness-125;
+}
+
+.dark .bg-harvest-light {
+  @apply bg-gray-800 text-gray-200;
+}
+
+/* Ensuring inputs and form elements are visible in dark mode */
+.dark input, .dark select, .dark textarea {
+  @apply bg-gray-800 text-gray-200 border-gray-700;
+}
+
+/* Ensuring card content is visible in dark mode */
+.dark .card {
+  @apply bg-gray-800 border-gray-700;
+}

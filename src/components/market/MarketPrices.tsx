@@ -1,115 +1,290 @@
-import { LineChart, AlertTriangle, TrendingUp, TrendingDown } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useState, useEffect } from "react";
+import { 
+  ArrowUpCircle, 
+  ArrowDownCircle, 
+  MinusCircle, 
+  ChevronRight, 
+  Loader, 
+  RefreshCw,
+  ChevronLeft
+} from "lucide-react";
+import { getMarketPrices, getCropDetails, MarketPrice, CropDetail } from "@/utils/marketAPI";
+import { useToast } from "@/hooks/use-toast";
 import { useI18n } from "@/hooks/use-i18n";
-
-interface CropPrice {
-  id: number;
-  name: string;
-  price: number;
-  unit: string;
-  change: number;
-  trend: "up" | "down" | "stable";
-}
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
 interface MarketPricesProps {
-  selectedCrop: CropPrice | null;
-  onSelectCrop: (crop: CropPrice) => void;
+  selectedCropId: string | null;
+  onSelectCrop: (cropId: string) => void;
+  onBack: () => void;
 }
 
-const MarketPrices = ({ selectedCrop, onSelectCrop }: MarketPricesProps) => {
+const MarketPrices = ({ selectedCropId, onSelectCrop, onBack }: MarketPricesProps) => {
   const { t } = useI18n();
-  
-  const marketPrices: CropPrice[] = [
-    { id: 1, name: t("crops.wheat", "Wheat"), price: 280.50, unit: t("units.perTon", "per ton"), change: 1.2, trend: "up" },
-    { id: 2, name: t("crops.corn", "Corn"), price: 220.75, unit: t("units.perTon", "per ton"), change: -0.8, trend: "down" },
-    { id: 3, name: t("crops.soybeans", "Soybeans"), price: 550.25, unit: t("units.perTon", "per ton"), change: 2.3, trend: "up" },
-    { id: 4, name: t("crops.rice", "Rice"), price: 420.00, unit: t("units.perTon", "per ton"), change: 0.5, trend: "up" },
-    { id: 5, name: t("crops.potatoes", "Potatoes"), price: 12.35, unit: t("units.perKg", "per kg"), change: -1.5, trend: "down" },
-    { id: 6, name: t("crops.tomatoes", "Tomatoes"), price: 3.75, unit: t("units.perKg", "per kg"), change: -2.1, trend: "down" },
-    { id: 7, name: t("crops.apples", "Apples"), price: 2.50, unit: t("units.perKg", "per kg"), change: 0.2, trend: "stable" },
-    { id: 8, name: t("crops.oranges", "Oranges"), price: 2.80, unit: t("units.perKg", "per kg"), change: 1.0, trend: "up" }
-  ];
+  const [marketPrices, setMarketPrices] = useState<MarketPrice[]>([]);
+  const [cropDetails, setCropDetails] = useState<CropDetail | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
+  const { toast } = useToast();
 
-  const getTrendIcon = (trend: string, size: number = 16) => {
-    switch (trend) {
-      case "up":
-        return <TrendingUp size={size} className="text-green-500" />;
-      case "down":
-        return <TrendingDown size={size} className="text-red-500" />;
-      default:
-        return <LineChart size={size} className="text-gray-500" />;
+  const loadMarketData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await getMarketPrices();
+      setMarketPrices(data);
+    } catch (err) {
+      console.error("Market data error:", err);
+      setError(t("market.loadError", "Failed to load market data. Please try again later."));
+      toast({
+        title: t("market.errorTitle", "Market Data Error"),
+        description: t("market.errorDescription", "Could not load market prices. Please try again."),
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
+  const loadCropDetails = async (cropId: string) => {
+    try {
+      setLoading(true);
+      const details = await getCropDetails(cropId);
+      setCropDetails(details);
+    } catch (error) {
+      console.error("Error loading crop details:", error);
+      toast({
+        title: t("market.errorTitle", "Market Data Error"),
+        description: t("market.detailsError", "Could not load crop details. Please try again."),
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (selectedCropId) {
+      loadCropDetails(selectedCropId);
+    } else {
+      loadMarketData();
+    }
+  }, [selectedCropId]);
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    try {
+      const data = await getMarketPrices();
+      setMarketPrices(data);
+      toast({
+        title: t("market.refreshSuccess", "Prices Updated"),
+        description: t("market.refreshDescription", "Market prices have been refreshed with the latest data."),
+      });
+    } catch (err) {
+      toast({
+        title: t("market.refreshFailed", "Refresh Failed"),
+        description: t("market.refreshFailedDesc", "Could not refresh market prices. Please try again."),
+        variant: "destructive",
+      });
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
+  const getTrendIcon = (trend: string) => {
+    switch (trend) {
+      case "up":
+        return <ArrowUpCircle className="h-5 w-5 text-green-500" />;
+      case "down":
+        return <ArrowDownCircle className="h-5 w-5 text-red-500" />;
+      case "stable":
+        return <MinusCircle className="h-5 w-5 text-gray-400" />;
+      default:
+        return null;
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="h-80 flex flex-col items-center justify-center">
+        <Loader className="h-8 w-8 animate-spin text-harvest-primary mb-3" />
+        <p className="text-gray-500 dark:text-gray-300">
+          {t("market.loading", "Loading market data...")}
+        </p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-6 bg-red-50 dark:bg-red-900/20 rounded-lg text-center">
+        <p className="text-red-600 dark:text-red-400 mb-4">{error}</p>
+        <button 
+          onClick={loadMarketData} 
+          className="px-4 py-2 bg-harvest-primary text-white rounded hover:bg-harvest-primary/90"
+        >
+          {t("common.tryAgain", "Try Again")}
+        </button>
+      </div>
+    );
+  }
+
+  if (selectedCropId && cropDetails) {
+    return (
+      <div>
+        <button 
+          onClick={onBack}
+          className="mb-4 flex items-center text-harvest-primary hover:text-harvest-secondary"
+        >
+          <ChevronLeft className="h-4 w-4 mr-1" />
+          {t("market.backToPrices", "Back to Market Prices")}
+        </button>
+
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
+          <div className="p-6">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                {cropDetails.name}
+              </h2>
+              <div className="flex items-center">
+                <span className={`text-2xl font-semibold mr-2 ${
+                  cropDetails.change > 0 
+                    ? 'text-green-600 dark:text-green-400' 
+                    : cropDetails.change < 0 
+                    ? 'text-red-600 dark:text-red-400' 
+                    : 'text-gray-700 dark:text-gray-300'
+                }`}>
+                  ₹{cropDetails.currentPrice.toFixed(2)}
+                </span>
+                {getTrendIcon(cropDetails.trend)}
+              </div>
+            </div>
+
+            <div className="h-64 w-full mb-6">
+              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                {t("market.priceHistory", "Price History (30 Days)")}
+              </h3>
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={cropDetails.priceHistory}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#d1d5db" />
+                  <XAxis 
+                    dataKey="date" 
+                    tick={{ fontSize: 12 }} 
+                    tickFormatter={(value) => {
+                      const date = new Date(value);
+                      return `${date.getDate()}/${date.getMonth() + 1}`;
+                    }}
+                  />
+                  <YAxis 
+                    domain={['auto', 'auto']} 
+                    tick={{ fontSize: 12 }}
+                    tickFormatter={(value) => `₹${value}`}
+                  />
+                  <Tooltip 
+                    formatter={(value) => [`₹${Number(value).toFixed(2)}`, t("market.price", "Price")]}
+                    labelFormatter={(value) => new Date(value).toLocaleDateString()}
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="price" 
+                    stroke="#10b981" 
+                    activeDot={{ r: 8 }} 
+                    strokeWidth={2}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+
+            <div className="mb-6">
+              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                {t("market.aboutCrop", "About {crop}", { crop: cropDetails.name })}
+              </h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                {cropDetails.description}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center space-x-2">
-          <LineChart className="h-5 w-5 text-harvest-primary" />
-          <span>{t("market.currentCropPrices", "Current Crop Prices")}</span>
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="bg-gray-50 dark:bg-gray-800">
-                <th className="px-4 py-2 text-left">{t("market.table.crop", "Crop")}</th>
-                <th className="px-4 py-2 text-right">{t("market.table.price", "Price")}</th>
-                <th className="px-4 py-2 text-right">{t("market.table.change", "Change")}</th>
-                <th className="px-4 py-2 text-center">{t("market.table.trend", "Trend")}</th>
-                <th className="px-4 py-2 text-center">{t("market.table.action", "Action")}</th>
+    <div className="overflow-hidden bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow">
+      <div className="px-4 py-3 bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+        <h3 className="text-gray-700 dark:text-gray-200 font-medium">
+          {t("market.currentPrices", "Current Crop Prices")}
+        </h3>
+        <button 
+          onClick={handleRefresh} 
+          disabled={refreshing}
+          className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 flex items-center"
+        >
+          <RefreshCw className={`h-4 w-4 mr-1 ${refreshing ? 'animate-spin' : ''}`} />
+          <span className="text-xs">{t("common.refresh", "Refresh")}</span>
+        </button>
+      </div>
+      <div className="overflow-hidden overflow-x-auto">
+        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+          <thead className="bg-gray-50 dark:bg-gray-700">
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                {t("market.crop", "Crop")}
+              </th>
+              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                {t("market.price", "Price")}
+              </th>
+              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                {t("market.change", "Change")}
+              </th>
+              <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                {t("market.trend", "Trend")}
+              </th>
+              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                {t("market.action", "Action")}
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+            {marketPrices.map((price) => (
+              <tr key={price.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
+                  {price.crop}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-700 dark:text-gray-300">
+                  ₹{price.price.toFixed(2)} <span className="text-xs text-gray-500 dark:text-gray-400">{price.unit}</span>
+                </td>
+                <td className={`px-6 py-4 whitespace-nowrap text-sm text-right ${
+                  price.change > 0 
+                    ? 'text-green-600 dark:text-green-400' 
+                    : price.change < 0 
+                    ? 'text-red-600 dark:text-red-400' 
+                    : 'text-gray-500 dark:text-gray-400'
+                }`}>
+                  {price.change > 0 ? '+' : ''}{price.change.toFixed(2)}%
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-center">
+                  {getTrendIcon(price.trend)}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-right text-sm">
+                  <button 
+                    onClick={() => onSelectCrop(price.id)}
+                    className="inline-flex items-center text-harvest-primary hover:text-harvest-secondary"
+                  >
+                    {t("market.details", "Details")}
+                    <ChevronRight className="h-4 w-4 ml-1" />
+                  </button>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {marketPrices.map((crop) => (
-                <tr 
-                  key={crop.id} 
-                  className="border-t border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer"
-                  onClick={() => onSelectCrop(crop)}
-                >
-                  <td className="px-4 py-3 font-medium">{crop.name}</td>
-                  <td className="px-4 py-3 text-right">
-                    ${crop.price.toFixed(2)} <span className="text-gray-500 dark:text-gray-400 text-xs">{crop.unit}</span>
-                  </td>
-                  <td className={`px-4 py-3 text-right ${
-                    crop.change > 0 
-                      ? "text-green-600" 
-                      : crop.change < 0 
-                        ? "text-red-600" 
-                        : "text-gray-600 dark:text-gray-400"
-                  }`}>
-                    {crop.change > 0 ? "+" : ""}{crop.change.toFixed(1)}%
-                  </td>
-                  <td className="px-4 py-3 text-center">
-                    {getTrendIcon(crop.trend)}
-                  </td>
-                  <td className="px-4 py-3 text-center">
-                    <button 
-                      className="text-xs text-harvest-primary hover:text-harvest-secondary underline"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onSelectCrop(crop);
-                      }}
-                    >
-                      {t("market.details", "Details")}
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        
-        <div className="mt-6 flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
-          <p>{t("market.lastUpdated", "Last updated")}: {t("market.today", "Today")}, 10:30 AM</p>
-          <p className="flex items-center">
-            <AlertTriangle size={14} className="mr-1 text-yellow-500" />
-            {t("market.pricesDisclaimer", "Prices may vary by region and quality")}
-          </p>
-        </div>
-      </CardContent>
-    </Card>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="px-4 py-3 bg-gray-50 dark:bg-gray-700 text-xs text-gray-500 dark:text-gray-400 italic">
+        {t("market.lastUpdated", "Last updated")}: {new Date().toLocaleString()} · {t("market.priceDisclaimer", "Prices may vary by region and quality")}
+      </div>
+    </div>
   );
 };
 
